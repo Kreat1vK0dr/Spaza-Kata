@@ -1,6 +1,6 @@
-var group = require('./group_data');
+var Nelisa = require('./whatNelisaWants');
 
-var smsData = group.whatNelisaWants();
+var smsData = Nelisa.whatSheWants();
 
 function getWeekData(week) {
   switch(week) {

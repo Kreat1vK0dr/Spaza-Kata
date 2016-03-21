@@ -1,4 +1,5 @@
 var group = require('../group_data');
+var Nelisa = require('../whatNelisaWants');
 // var chaiassert = require('chai').assert;
 var assert = require('assert');
 var _ = require('lodash');
@@ -145,6 +146,7 @@ describe('GET&MAP_DATA', function() {
       });
 
 
+
  });
 
  describe('GROUP_DATA', function() {
@@ -159,47 +161,70 @@ describe('GET&MAP_DATA', function() {
             assert.deepEqual(result, ["week1","week2","week3","week4"]);
       });
 
-      it('group.salesByProduct should...return cumulative revenue, totalcost, and profit for each product for each week.', function() {
+      it('group.salesByProduct : the arrays should contain objects with the following properties: week, category, product, quantity, inventory, unitPrice, revenue, totalcost, and profit.', function() {
+            var object = group.salesByProduct()[2][5];
+            var result = Object.keys(object).reduce(function(arr, key){arr.push(key); return arr;},[]);
+            assert.deepEqual(result, ['week', "category", "product", "quantity", "inventory", "unitPrice", "revenue", "totalcost", "profit"]);
+      });
+
+      it('group.salesByProduct should...return cumulative quantity, inventory, unitPrice, revenue, totalcost, and profit for each PRODUCT by week.', function() {
             var result = f.filterData(group.salesByProduct()[2],[["product","Milk 1l"]]);
             assert.deepEqual(result, [{week: "week3", category: "Food", product: "Milk 1l", quantity: 30, inventory: 10, unitPrice: 10, revenue: 300, totalcost: 227.5, profit: 72.5 }]);
       });
-      //
-      // it(' should...', function() {
-      //       var result =
-      //       assert.deepEqual(result, );
-      // });
-      //
-      // it(' should...', function() {
-      //       var result =
-      //       assert.deepEqual(result, );
-      // });
-      //
-      // it(' should...', function() {
-      //       var result =
-      //       assert.deepEqual(result, );
-      // });
-      //
-      // it(' should...', function() {
-      //       var result =
-      //       assert.deepEqual(result, );
-      // });
-      //
-      // it(' should...', function() {
-      //       var result =
-      //       assert.deepEqual(result, );
-      // });
-      //
-      // it(' should...', function() {
-      //       var result =
-      //       assert.deepEqual(result, );
-      // });
-      //
-      // it(' should...', function() {
-      //       var result =
-      //       assert.deepEqual(result, );
-      // });
+
+      it('group.salesByProduct: if a product has more than one price in a given week the unitPrice property should reflect an array of all the different prices.', function() {
+            var result = f.filterData(group.salesByProduct()[0],[["product","Mixed Sweets 5s"]])[0].unitPrice;
+            assert.deepEqual(result, [3, 2]);
+      });
+
+      it('group.salesByCategoryshould...return an array of arrays, one for each week.', function() {
+            var result = group.salesByCategory().length;
+            assert.equal(result, 4);
+      });
+
+      it('group.salesByCategory: each array should only contain data for one week and they should be in order.', function() {
+            var result = [group.salesByCategory()[0][1].week, group.salesByCategory()[1][0].week,group.salesByCategory()[2][2].week, group.salesByCategory()[3][3].week];
+            assert.deepEqual(result, ["week1","week2","week3","week4"]);
+      });
+
+      it('group.salesByCategory: the arrays should contain objects with the following properties: week, category, quantity, inventory, unitPrice, revenue, totalcost, and profit.', function() {
+            var object = group.salesByCategory()[2][1];
+            var result = Object.keys(object).reduce(function(arr, key) {arr.push(key); return arr;},[])
+            assert.deepEqual(result, ['week', "category", "quantity", "inventory", "unitPrice", "revenue", "totalcost", "profit"]);
+      });
+
+      it('group.salesByCategoryshould...return cumulative quantity, inventory, unitPrice, revenue, totalcost, and profit for each CATEGORY by week.', function() {
+            var result = f.filterData(group.salesByCategory()[1],[["category","Miscellaneous"]]);
+            assert.deepEqual(result, [{week: "week2", category: "Miscellaneous", quantity: 28, inventory: 12, unitPrice: [15, 4], revenue: 266, totalcost: 168, profit: 98 }]);
+      });
 
   });
+
+  describe('WHAT NELISA WANTS', function() {
+
+    it('Nelisa.whatSheWants should... return an array of objects, ONE FOR EACH WEEK.', function() {
+          var result = Nelisa.whatSheWants().length;
+          assert.equal(result, 4);
+    });
+
+    it('Nelisa.whatSheWants should... return an array of OBJECTS.', function() {
+          var result = [Nelisa.whatSheWants()[0].length, Nelisa.whatSheWants()[1].length, Nelisa.whatSheWants()[2].length, Nelisa.whatSheWants()[3].length];
+          assert.deepEqual(result, [undefined, undefined, undefined, undefined]);
+    });
+
+    it('Nelisa.whatSheWants: Each array should have the week as property and should be in order.', function() {
+          var result = [Nelisa.whatSheWants()[0].week, Nelisa.whatSheWants()[1].week, Nelisa.whatSheWants()[2].week, Nelisa.whatSheWants()[3].week];
+          assert.deepEqual(result, ["week1","week2","week3","week4"]);
+    });
+
+    it('Nelisa.whatSheWants should... return by week, the MOST: popular product, profitable product, popular category, profitable category; And the LEAST: popular product, profitable product, popular category, profitable category.', function() {
+          var result = Nelisa.whatSheWants()[1];
+          assert.deepEqual(result, {week: "week2", "most popular product": {product: "Mixed Sweets 5s", quantity: 54}, "most profitable product": {product: "Imasi", profit: 288}, "least popular product": {product: "Soap Bar", quantity: 5}, "least profitable product": {product: "Mixed Sweets 5s", profit: -15}, "most popular category": {category: "Food", quantity: 123}, "most profitable category": {category: "Food", profit: 625}, "least popular category": {category: "Toiletries", quantity: 11}, "least profitable category": {category: "Fruit", profit: 18.5}} );
+    });
+
+
+  });
+
 
  describe('SMS_CONFIGURE', function() {
 

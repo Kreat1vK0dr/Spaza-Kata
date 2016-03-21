@@ -17,7 +17,7 @@ function groupSalesByProduct() {
           allSummary.push(week.reduce(function(weekSum, sale) {
               if (!keeptrack[sale.product]) {
                 keeptrack[sale.product] = 1;
-                weekSum.push({week: sale.week, category: sale.category, product: sale.product, quantity: sale.quantity, unitPrice: sale.unitPrice, revenue: sale.revenue, totalcost: sale.totalcost, profit: sale.profit });
+                weekSum.push({week: sale.week, category: sale.category, product: sale.product, quantity: sale.quantity, inventory: sale.inventory-sale.quantity, unitPrice: sale.unitPrice, revenue: sale.revenue, totalcost: sale.totalcost, profit: sale.profit });
               } else {
                   var product = weekSum.find(function(item) {return item.product === sale.product;});
                   product.quantity += sale.quantity;
@@ -49,10 +49,11 @@ function groupSalesByCategory () {
         allWeekSum.push(week.reduce(function(weekSum, product){
                 if (!keeptrack[product.category]) {
                   keeptrack[product.category] = 1;
-                  weekSum.push({week: product.week, category: product.category, quantity: product.quantity, unitPrice: product.unitPrice, revenue: product.revenue, totalcost: product.totalcost, profit: product.profit});
+                  weekSum.push({week: product.week, category: product.category, quantity: product.quantity, inventory: product.inventory, unitPrice: product.unitPrice, revenue: product.revenue, totalcost: product.totalcost, profit: product.profit});
                 } else {
                   var category = weekSum.find(function(item) {return item.category === product.category;});
                   category.quantity += product.quantity;
+                  category.inventory += product.inventory;
                   category.revenue += product.revenue;
                   category.totalcost += product.totalcost;
                   category.profit += product.profit;
@@ -72,87 +73,7 @@ function groupSalesByCategory () {
 
 
 //****************************************************
-function returnWhatNelisaWants() {
-  var data = groupSalesByProduct();
-  var dataCat = groupSalesByCategory();
-          // NOTE: USING REDUCE HERE INSTEAD OF FIRST FILTERING TO GET EACH WEEK SAVES HALF THE TIME IT WOULD TAKE IF YOU FIRST FILTER.
-          // var weekSummary = [];
 
-          // var weeknames = getWeekNames();
-          //
-          //   weeknames.forEach(function(week)
-          // var data = groupSalesByProduct().filter(function(product) {
-          //                 return product.week === week;
-          //               });
-
-          var byProduct = data.reduce(function(summary, week) {
-
-            summary.push(week.reduce(function(obj, lineitem){
-
-              if (!obj.week) {
-                    obj.week = lineitem.week;
-                    obj['most popular product'] = {product: lineitem.product , quantity: lineitem.quantity};
-                    obj['least popular product'] = {product: lineitem.product  , quantity: lineitem.quantity};
-                    obj['most profitable product'] = {product: lineitem.product, profit: lineitem.profit};
-                    obj['least profitable product'] = {product: lineitem.product, profit: lineitem.profit};
-                  } else {
-                            if (lineitem.quantity > obj['most popular product'].quantity) {
-                      obj['most popular product'].product = lineitem.product;
-                      obj['most popular product'].quantity = lineitem.quantity;
-                      }
-                      if (lineitem.quantity < obj['least popular product'].quantity) {
-                        obj['least popular product'].product = lineitem.product;
-                        obj['least popular product'].quantity = lineitem.quantity;
-                      }
-                      if (lineitem.profit > obj['most profitable product'].profit) {
-                        obj['most profitable product'].product = lineitem.product;
-                        obj['most profitable product'].profit = lineitem.profit;
-                      }
-                      if (lineitem.profit < obj['least profitable product'].profit) {
-                        obj['least profitable product'].product = lineitem.product;
-                        obj['least profitable product'].profit = lineitem.profit;
-                      }
-
-                      // return obj;
-                  }
-                  return obj;
-            },{}));
-            return summary;
-          },[]);
-
-      for (var i = 0; i<dataCat.length;i++) {
-        for (var j = 0; j<dataCat[i].length; j++){
-            if (j === 0) {
-                  byProduct[i]['most popular category'] = {category: dataCat[i][j].category, quantity: dataCat[i][j].quantity};
-                  byProduct[i]['least popular category'] = {category: dataCat[i][j].category, quantity: dataCat[i][j].quantity};
-                  byProduct[i]['most profitable category'] = {category: dataCat[i][j].category, profit: dataCat[i][j].profit};
-                  byProduct[i]['least profitable category'] = {category: dataCat[i][j].category, profit: dataCat[i][j].profit};
-                } else {
-                        if (dataCat[i][j].quantity > byProduct[i]['most popular category'].quantity) {
-                  byProduct[i]['most popular category'].category = dataCat[i][j].category;
-                  byProduct[i]['most popular category'].quantity = dataCat[i][j].quantity;
-                  }
-                  if (dataCat[i][j].quantity < byProduct[i]['least popular category'].quantity) {
-                    byProduct[i]['least popular category'].category = dataCat[i][j].category;
-                    byProduct[i]['least popular category'].quantity = dataCat[i][j].quantity;
-                  }
-                  if (dataCat[i][j].profit > byProduct[i]['most profitable category'].profit) {
-                    byProduct[i]['most profitable category'].category = dataCat[i][j].category;
-                    byProduct[i]['most profitable category'].profit = dataCat[i][j].profit;
-                  }
-                  if (dataCat[i][j].profit < byProduct[i]['least profitable category'].profit) {
-                    byProduct[i]['least profitable category'].category = dataCat[i][j].category;
-                    byProduct[i]['least profitable category'].profit = dataCat[i][j].profit;
-                  }
-                }
-        }
-}
-return byProduct;
-}
-
-exports.whatNelisaWants = function() {
-  return returnWhatNelisaWants();
-};
 
 exports.salesByProduct = function() {
   return groupSalesByProduct();
