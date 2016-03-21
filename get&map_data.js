@@ -73,7 +73,7 @@ function findPurchases(item, mappedData) {
   return productDetails.purchases;
 }
 
-function getCost(mappedPurchases, date, item, quantity) {
+function getCostAndLogSaleAt(date, item, quantity, mappedPurchases) {
   var qOver = quantity , cost = 0;
   var purchases = findPurchases(item, mappedPurchases);
   if (qOver>0) {
@@ -107,7 +107,7 @@ function getCost(mappedPurchases, date, item, quantity) {
     return purchases.reduce(function(sum,i){sum += i.quantity; return sum;},0);
   }
 
-  function getInventoryRemainingBy(date, product, mappedPurchases) {
+  function getInventoryRemainingAt(date, product, mappedPurchases) {
     var purchases = findPurchases(product, mappedPurchases).filter(function(i){return new Date(i.date) <= new Date(date);});
     // console.log(draw.table(draw.dataTable(purchases)));
     return purchases.reduce(function(sum,i){sum += i.remaining; return sum;},0);
@@ -191,8 +191,8 @@ function getCost(mappedPurchases, date, item, quantity) {
          var cat = getCategory(catMap, sale[2]);
          var p = Number(sale[4].replace(/R/,""));
          var q = Number(sale[3]);
-         var inv = getInventoryRemainingBy(sale[1], sale[2], purchases);
-         var c = getCost(purchases, sale[1], sale[2], q);
+         var inv = getInventoryRemainingAt(sale[1], sale[2], purchases);
+         var c = getCostAndLogSaleAt(sale[1], sale[2], q, purchases);
          var obj = {
                    week: "week"+(i+1),
                    day: sale[0],
@@ -239,8 +239,8 @@ exports.productList = function(data) {
   return getProductList(data);
 };
 
-exports.cost = function(mappedPurchases,date, item, quantity) {
-  return getCost(mappedPurchases,date, item, quantity);
+exports.costAndLogSaleAt = function(date, product, quantity,mappedPurchases) {
+  return getCostAndLogSaleAt(date, product, quantity, mappedPurchases);
 };
 
 exports.rawPurchasesData = function() {
@@ -267,8 +267,8 @@ exports.quantityPurchasedBy = function(date, product) {
   return getQuantityPurchasedBy(date, product);
 };
 
-exports.inventoryRemainingBy = function(date, product) {
-  return getInventoryRemainingBy(date, product);
+exports.inventoryRemainingAt = function(date, product, mappedPurchases) {
+  return getInventoryRemainingAt(date, product, mappedPurchases);
 };
 // var filter = mappedPurchases().filter(function(i,idx){return idx === 0 || idx === 1;});
 //

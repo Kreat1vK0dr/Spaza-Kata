@@ -20,8 +20,13 @@ get.quantityPurchasedBy('15-Feb',"Milk 1l");
 // var result = group.salesByProduct()[0][0];
 // console.log(result);
 
+//
+// var data = f.filterData(get.mappedSales()[2], [["product","Milk 1l"]]);
+// var result = data.sort(f.sortBy('date'));
+// console.log(result);
+// console.log(draw.table(draw.dataTable(result)));
 
-var data = f.filterData(get.mappedSales()[2], [["product","Milk 1l"]]);
-var result = data.sort(f.sortBy('date'));
-console.log(result);
-console.log(draw.table(draw.dataTable(result)));
+
+var purchases = get.mappedPurchases();
+get.costAndLogSaleAt("11-Feb", "Iwisa Pap 5kg", 20, purchases);
+var result = get.inventoryRemainingAt("11-Feb", "Iwisa Pap 5kg", purchases);

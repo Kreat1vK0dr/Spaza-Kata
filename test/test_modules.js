@@ -75,30 +75,30 @@ describe('GET&MAP_DATA', function() {
             assert.deepEqual(result, [{date: "10-Feb", quantity: 20, remaining: 20, unitCost: 25, supplier: "Makro" }]);
       });
 
-      it('get.cost should...calculate the total cost of a sale.', function() {
+      it('get.costAndLogSaleAtAndLogSaleAt should...calculate the total cost of a sale.', function() {
             var purchases = get.mappedPurchases();
-            var result = get.cost(purchases, "3-Feb", "Milk 1l", 10);
+            var result = get.costAndLogSaleAt("3-Feb", "Milk 1l", 10, purchases);
             assert.equal(result, 70);
       });
 
-      it('get.cost should...deduct the quantity sold from the product\'s purchases.remaining property.\nNB if the total sale is greater than the first supply purchase then the quantity remaining after deducting from the first purchase should be deducted from the next purchase.', function() {
+      it('get.costAndLogSaleAt should...deduct the quantity sold from the product\'s purchases.remaining property.\nNB if the total sale is greater than the first supply purchase then the quantity remaining after deducting from the first purchase should be deducted from the next purchase.', function() {
             var purchases = get.mappedPurchases();
-            get.cost(purchases, "3-Feb", "Milk 1l", 10);
+            get.costAndLogSaleAt("3-Feb", "Milk 1l", 10, purchases);
             var result = get.findPurchases("Milk 1l", purchases).filter(function(i,idx){return idx === 0 || idx === 1;});
             assert.deepEqual(result, [{date: "23-Jan", quantity: 4, remaining: 0, unitCost: 7, supplier: "Makro"},{date: "28-Jan", quantity: 25, remaining: 19, unitCost: 7, supplier: "Makro"}]);
       });
 
-      it('get.cost should...be sensitive to date. You cannot sell what you do not have. If all quantities purchased have already been sold at the date of sale, even if there are other purchases at a later date, the later purchases should not be affected.shthe sale should return no revenue,or profit and the total cost should be zero.', function() {
+      it('get.costAndLogSaleAt should...be sensitive to date. You cannot sell what you do not have. If all quantities purchased have already been sold at the date of sale, even if there are other purchases at a later date, the later purchases should not be affected.shthe sale should return no revenue,or profit and the total cost should be zero.', function() {
             var purchases = get.mappedPurchases();
-            get.cost(purchases, "14-Feb", "Bananas - loose", 32);
-            get.cost(purchases, "17-Feb", "Bananas - loose", 10);
+            get.costAndLogSaleAt("14-Feb", "Bananas - loose", 32, purchases);
+            get.costAndLogSaleAt("17-Feb", "Bananas - loose", 10, purchases);
             var result = get.findPurchases("Bananas - loose", purchases).filter(function(i,idx){return idx === 4 || idx === 5;});
             assert.deepEqual(result, [{date: "13-Feb", quantity: 4, remaining: 0, unitCost: 1, supplier: "Epping Market"},{date: "20-Feb", quantity: 20, remaining: 20, unitCost: 1, supplier: "Epping Market"}]);
       });
 
-      it('get.cost should...calculate total cost using the first-in-first-out principle.', function() {
+      it('get.costAndLogSaleAt should...calculate total cost using the first-in-first-out principle.', function() {
         var purchases = get.mappedPurchases();
-            var result = get.cost(purchases, "15-Feb", "Bread", 32);
+            var result = get.costAndLogSaleAt("15-Feb", "Bread", 32, purchases);
             assert.equal(result, 292);
       });
 
@@ -119,16 +119,17 @@ describe('GET&MAP_DATA', function() {
       });
 
 
-      // it('get.quantityPurchasedBy should...', function() {
-      //       var result =
-      //       assert.deepEqual(result, );
-      // });
-      //
-      //
-      // it('get.inventoryRemainingBy should...', function() {
-      //       var result =
-      //       assert.deepEqual(result, );
-      // });
+      it('get.quantityPurchasedBy should...take a date and product name as parameter and return the sum of all purchases made up to and including that date for the specified product.', function() {
+            var result = get.quantityPurchasedBy("17-Feb", "Top Class Soy Mince");
+            assert.equal(result, 50);
+      });
+
+      it('get.inventoryRemainingAt should...take date, product, and mappedPurchases as parameters and return the inventory remaining at that date for the specified product', function() {
+            var purchases = get.mappedPurchases();
+            get.costAndLogSaleAt("11-Feb", "Iwisa Pap 5kg", 20, purchases);
+            var result = get.inventoryRemainingAt("11-Feb", "Iwisa Pap 5kg", purchases);
+            assert.equal(result, 8);
+      });
 
 
       it('get.mappedSales: It is important that the revenue,total cost, and profit are all calculated accurately.', function() {
@@ -152,7 +153,6 @@ describe('GET&MAP_DATA', function() {
             var result = group.salesByProduct().length;
             assert.equal(result, 4);
       });
-
 
       it('group.salesByProduct : each array should only contain data for one week and they should be in order.', function() {
             var result = [group.salesByProduct()[0][14].week, group.salesByProduct()[1][3].week,group.salesByProduct()[2][8].week, group.salesByProduct()[3][7].week];
