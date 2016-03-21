@@ -14,13 +14,14 @@ function groupSalesByProduct() {
 
     return data.reduce(function(allSummary, week){
       var keeptrack = {};
-      allSummary.push(week.reduce(function(weekSum, sale) {
+          allSummary.push(week.reduce(function(weekSum, sale) {
               if (!keeptrack[sale.product]) {
                 keeptrack[sale.product] = 1;
                 weekSum.push({week: sale.week, category: sale.category, product: sale.product, quantity: sale.quantity, unitPrice: sale.unitPrice, revenue: sale.revenue, totalcost: sale.totalcost, profit: sale.profit });
               } else {
                   var product = weekSum.find(function(item) {return item.product === sale.product;});
                   product.quantity += sale.quantity;
+                  product.inventory = sale.inventory - sale.quantity;
                   product.revenue += sale.revenue;
                   product.totalcost += sale.totalcost;
                   product.profit += sale.profit;

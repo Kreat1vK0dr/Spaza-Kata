@@ -115,12 +115,25 @@ describe('GET&MAP_DATA', function() {
       it('get.mappedSales: Each object should include the following: week, day, date, category, product, quantity, unitPrice, revenue, totalcost, and profit.', function() {
             var object = get.mappedSales()[2][5];
             var result = Object.keys(object).reduce(function(arr, key){arr.push(key);return arr;},[]);
-            assert.deepEqual(result, ['week','day','date','category','product','quantity','unitPrice','revenue','totalcost','profit']);
+            assert.deepEqual(result, ['week','day','date','category','product','quantity', 'inventory', 'unitPrice','revenue','totalcost','profit']);
       });
+
+
+      // it('get.quantityPurchasedBy should...', function() {
+      //       var result =
+      //       assert.deepEqual(result, );
+      // });
+      //
+      //
+      // it('get.inventoryRemainingBy should...', function() {
+      //       var result =
+      //       assert.deepEqual(result, );
+      // });
+
 
       it('get.mappedSales: It is important that the revenue,total cost, and profit are all calculated accurately.', function() {
             var result = [get.mappedSales()[0][15], get.mappedSales()[1][60], get.mappedSales()[2][5], get.mappedSales()[3][27]];
-            assert.deepEqual(result, [{week: 'week1', day: 'Monday', date: '2-Feb', category: 'Food', product: 'Milk 1l', quantity: 4, unitPrice: 10, revenue: 40, totalcost: 28, profit: 12},{week: 'week2', day: 'Wednesday', date: '11-Feb', category: 'Fruit', product: 'Apples - loose', quantity: 3, unitPrice: 2, revenue: 6, totalcost: 4.5, profit: 1.5},{week: 'week3', day: 'Sunday', date: '15-Feb', category: 'Soda', product: 'Fanta 500ml', quantity: 5, unitPrice: 6.5, revenue: 32.5, totalcost: 22.5, profit: 10},{week: 'week4', day: 'Monday', date: '23-Feb', category: 'Fruit', product: 'Bananas - loose', quantity: 2, unitPrice: 2, revenue: 4, totalcost: 2, profit: 2}]);
+            assert.deepEqual(result, [{week: 'week1', day: 'Monday', date: '2-Feb', category: 'Food', product: 'Milk 1l', quantity: 4, inventory: 26, unitPrice: 10, revenue: 40, totalcost: 28, profit: 12},{week: 'week2', day: 'Wednesday', date: '11-Feb', category: 'Fruit', product: 'Apples - loose', quantity: 3, inventory: 190, unitPrice: 2, revenue: 6, totalcost: 4.5, profit: 1.5},{week: 'week3', day: 'Sunday', date: '15-Feb', category: 'Soda', product: 'Fanta 500ml', quantity: 5, inventory: 6, unitPrice: 6.5, revenue: 32.5, totalcost: 22.5, profit: 10},{week: 'week4', day: 'Monday', date: '23-Feb', category: 'Fruit', product: 'Bananas - loose', quantity: 2, inventory: 12, unitPrice: 2, revenue: 4, totalcost: 2, profit: 2}]);
       });
 
       it('get.mappedSales should...be sensitive to date. You cannot sell what you do not have. If all quantities purchased have already been sold at the date of sale, even if there are other purchases at a later date, the sale should reflect no revenue or profit and the total cost should be zero.\nNB: Bananas sold on 17-Feb is such an example. There is no supply left so there should be no profit or revenue from such a sale.', function() {
@@ -133,54 +146,60 @@ describe('GET&MAP_DATA', function() {
 
  });
 
- // describe('GROUP_DATA', function() {
- //
- //      it(' should...', function() {
- //            var result =
- //            assert.deepEqual(result, );
- //      });
- //
- //      it(' should...', function() {
- //            var result =
- //            assert.deepEqual(result, );
- //      });
- //
- //      it(' should...', function() {
- //            var result =
- //            assert.deepEqual(result, );
- //      });
- //
- //      it(' should...', function() {
- //            var result =
- //            assert.deepEqual(result, );
- //      });
- //
- //      it(' should...', function() {
- //            var result =
- //            assert.deepEqual(result, );
- //      });
- //
- //      it(' should...', function() {
- //            var result =
- //            assert.deepEqual(result, );
- //      });
- //
- //      it(' should...', function() {
- //            var result =
- //            assert.deepEqual(result, );
- //      });
- //
- //      it(' should...', function() {
- //            var result =
- //            assert.deepEqual(result, );
- //      });
- //
- //      it(' should...', function() {
- //            var result =
- //            assert.deepEqual(result, );
- //      });
- //
- //  });
+ describe('GROUP_DATA', function() {
+
+      it('group.salesByProduct should...return an array of arrays, one for each week.', function() {
+            var result = group.salesByProduct().length;
+            assert.equal(result, 4);
+      });
+
+
+      // it('group.salesByProduct : each array should only contain data for one week and they should be in order.', function() {
+      //       var result = [group.salesByProduct()[0][14].week, group.salesByProduct()[1][3].week,group.salesByProduct()[2][8].week, group.salesByProduct()[3][7].week];
+      //       assert.deepEqual(result, ["week1","week2","week3","week4"]);
+      // });
+
+      // it('group.salesByProduct should...return cumulative revenue, totalcost, and profit for each product for each week.', function() {
+      //       var result = f.filterData(group.salesByProduct()[2],[["product","Milk 1l"]]);
+      //       assert.deepEqual(result, [{week: "week3", category: "Food", product: "Milk 1l", quantity: sale.quantity, unitPrice: sale.unitPrice, revenue: sale.revenue, totalcost: sale.totalcost, profit: sale.profit }]);
+      // });
+      //
+      // it(' should...', function() {
+      //       var result =
+      //       assert.deepEqual(result, );
+      // });
+      //
+      // it(' should...', function() {
+      //       var result =
+      //       assert.deepEqual(result, );
+      // });
+      //
+      // it(' should...', function() {
+      //       var result =
+      //       assert.deepEqual(result, );
+      // });
+      //
+      // it(' should...', function() {
+      //       var result =
+      //       assert.deepEqual(result, );
+      // });
+      //
+      // it(' should...', function() {
+      //       var result =
+      //       assert.deepEqual(result, );
+      // });
+      //
+      // it(' should...', function() {
+      //       var result =
+      //       assert.deepEqual(result, );
+      // });
+      //
+      // it(' should...', function() {
+      //       var result =
+      //       assert.deepEqual(result, );
+      // });
+
+  });
 
  describe('SMS_CONFIGURE', function() {
 

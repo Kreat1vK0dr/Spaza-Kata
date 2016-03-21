@@ -14,7 +14,7 @@ function exportProductList() {
   fs.writeFileSync(prodFile, exportData);
 }
 
-exportProductList();
+// exportProductList();
 
 exports.productList = function() {
   return exportProductList();

@@ -15,16 +15,16 @@ var productListFolder = "./product-list";
 
 // FILTER GROUP BY PRODUCT************************************************************************
 
-var byProduct = f.concat(group.salesByProduct());
-var filtered = f.filterData(byProduct,[['week','week2'],['category','Sweets']]);
+// var byProduct = f.concat(group.salesByProduct());
+// var filtered = f.filterData(byProduct,[['week','week2'],['category','Sweets']]);
 // var sorted = byProduct.sort(f.sortBy('quantity'));
 // console.log(draw.table(draw.dataTable(filtered)));
 // console.log(groupSalesByProduct());
 
 // FILTER GROUP BY CATEGORY************************************************************************
-var byCategory = f.concat(group.salesByCategory());
-var sorted = byCategory.sort(f.sortBy('quantity'));
-var filtered = f.filterData(sorted,[['week','week2'],['category','Sweets']]);
+// var byCategory = f.concat(group.salesByCategory());
+// var sorted = byCategory.sort(f.sortBy('quantity'));
+// var filtered = f.filterData(sorted,[['week','week2'],['category','Sweets']]);
 // console.log(draw.table(draw.dataTable(byCategory)));
 // console.log(groupSalesByCategory().length);
 // console.log(draw.table(draw.dataTable(sorted)));
@@ -32,4 +32,16 @@ var filtered = f.filterData(sorted,[['week','week2'],['category','Sweets']]);
 // console.log(draw.table(draw.dataTable(filtered)));
 
 // TEST IMPORTED MODULES************************************************************************
-console.log(sms.content().length);
+// console.log(sms.content().length);
+
+// console.log(group.salesByProduct());
+
+// var data = f.filterData(get.mappedSales()[2], [["product","Milk 1l"]]);
+// var result = data.sort(f.sortBy('date'));
+// console.log(result);
+// console.log(draw.table(draw.dataTable(result)));
+
+------------------------------------------------------------------------------
+
+// var found = get.quantityPurchasedBy('15-Feb',"Milk 1l");
+// console.log(found);

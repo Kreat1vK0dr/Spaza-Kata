@@ -45,6 +45,7 @@ function chainFilter(arrayOfFilterPairs, input) {
 //     }
 
 ///OPTION 2: WITH DIRECT ARRAY INPUT.
+//NOTE: DATA SHOULD NOT BE AN ARRAY OF ARRAYS OF ARRAYS. SHOUD BE A SINGULAR ARRAY OF ARRAYS. IF NOT, USE CONCAT.
 function filterData(data, arrayOfFilterPairs) {  //e.g. [['week','week1'],['product','Bread']] OR [['week', 'week2 week3'], ['product', 'product1 product2']] etc.
       return chainFilter(arrayOfFilterPairs, data);
     }
@@ -57,11 +58,11 @@ return arrayOfFilterPairs;
 
 exports.sortBy = function(key) {
   return sortBy(key);
-}
+};
 
 exports.concat = function(arrayOfArrays) {
   return concat(arrayOfArrays);
-}
+};
 
 exports.filterData = function(data, arrayOfFilterPairs) {
   return filterData(data, arrayOfFilterPairs);

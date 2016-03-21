@@ -1,7 +1,7 @@
 var _ = require('lodash');
 var fs = require('fs');
 var _ = require('lodash');
-var d = require('./drawTable');
+var draw = require('./drawTable');
 var f = require('./filter');
 var path = require('./filepaths');
 var catFile = path.categoriesFile();
@@ -101,6 +101,18 @@ function getCost(mappedPurchases, date, item, quantity) {
       return cost;
   }// END OF GET COST.
 
+  function getQuantityPurchasedBy(date, product) {
+    var purchases = findPurchases(product, mappedPurchases()).filter(function(i){return new Date(i.date) <= new Date(date);});
+    // console.log(draw.table(draw.dataTable(purchases)));
+    return purchases.reduce(function(sum,i){sum += i.quantity; return sum;},0);
+  }
+
+  function getInventoryRemainingBy(date, product, mappedPurchases) {
+    var purchases = findPurchases(product, mappedPurchases).filter(function(i){return new Date(i.date) <= new Date(date);});
+    // console.log(draw.table(draw.dataTable(purchases)));
+    return purchases.reduce(function(sum,i){sum += i.remaining; return sum;},0);
+  }
+
   function getProductList(fromThisList) {
        var obj = {};
        return fromThisList.reduce(function(arr, item){
@@ -179,6 +191,7 @@ function getCost(mappedPurchases, date, item, quantity) {
          var cat = getCategory(catMap, sale[2]);
          var p = Number(sale[4].replace(/R/,""));
          var q = Number(sale[3]);
+         var inv = getInventoryRemainingBy(sale[1], sale[2], purchases);
          var c = getCost(purchases, sale[1], sale[2], q);
          var obj = {
                    week: "week"+(i+1),
@@ -187,7 +200,8 @@ function getCost(mappedPurchases, date, item, quantity) {
                    category: cat,
                    product: sale[2],
                    quantity: q,
-                   unitPrice: p,
+                   inventory: inv,
+                   unitPrice: p
                    };
                   obj.revenue = typeof c==='object' ? p*c[1] : p*q;
                   obj.totalcost = typeof c==='object' ? c[0] : c;
@@ -248,6 +262,14 @@ exports.salesArray = function(itemlist) {
 exports.findPurchases = function(item, mappedData) {
   return findPurchases(item, mappedData);
 };
+
+exports.quantityPurchasedBy = function(date, product) {
+  return getQuantityPurchasedBy(date, product);
+};
+
+exports.inventoryRemainingBy = function(date, product) {
+  return getInventoryRemainingBy(date, product);
+};
 // var filter = mappedPurchases().filter(function(i,idx){return idx === 0 || idx === 1;});
 //
 // console.log(filter);
@@ -257,6 +279,8 @@ exports.findPurchases = function(item, mappedData) {
 //   var result = createSalesArray(output[0])[0];
 // console.log(result);
 // var purchases = mappedPurchases();
-var result = mappedSales()[2].find(function(i){return i.date === "17-Feb" && i.product === "Bananas - loose";});
+// var result = mappedSales()[2].find(function(i){return i.date === "17-Feb" && i.product === "Bananas - loose";});
 // console.log(result);
 // mappedSales();
+// var found = getQuantityPurchasedBy('15-Feb',"Milk 1l");
+// console.log(found);
