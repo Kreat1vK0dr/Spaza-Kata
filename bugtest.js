@@ -17,5 +17,11 @@ get.quantityPurchasedBy('15-Feb',"Milk 1l");
 // var result = [get.mappedSales()[0][15], get.mappedSales()[1][60], get.mappedSales()[2][5], get.mappedSales()[3][27]];
 
 
-var result = group.salesByProduct()[0][0];
+// var result = group.salesByProduct()[0][0];
+// console.log(result);
+
+
+var data = f.filterData(get.mappedSales()[2], [["product","Milk 1l"]]);
+var result = data.sort(f.sortBy('date'));
 console.log(result);
+console.log(draw.table(draw.dataTable(result)));

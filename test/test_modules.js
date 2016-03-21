@@ -139,7 +139,7 @@ describe('GET&MAP_DATA', function() {
       it('get.mappedSales should...be sensitive to date. You cannot sell what you do not have. If all quantities purchased have already been sold at the date of sale, even if there are other purchases at a later date, the sale should reflect no revenue or profit and the total cost should be zero.\nNB: Bananas sold on 17-Feb is such an example. There is no supply left so there should be no profit or revenue from such a sale.', function() {
             var result = get.mappedSales()[2].find(function(i){return i.date === "17-Feb" && i.product === "Bananas - loose";});
             var expected = {week: "week3", day: "Tuesday", date: "17-Feb", category: "Fruit", product: "Bananas - loose", quantity: 2, unitPrice: 2, revenue: 0, totalcost: 0, profit: 0};
-            assert.deepEqual(result, {week: "week3", day: "Tuesday", date: "17-Feb", category: "Fruit", product: "Bananas - loose", quantity: 2, unitPrice: 2, revenue: 0, totalcost: 0, profit: 0});
+            assert.deepEqual(result, {week: "week3", day: "Tuesday", date: "17-Feb", category: "Fruit", product: "Bananas - loose", quantity: 2, inventory: 0, unitPrice: 2, revenue: 0, totalcost: 0, profit: 0});
             // chaiassert(result===expected, "Success: No profit or revenue reflected from sale of bananas on 17-Feb.");
       });
 
@@ -154,15 +154,15 @@ describe('GET&MAP_DATA', function() {
       });
 
 
-      // it('group.salesByProduct : each array should only contain data for one week and they should be in order.', function() {
-      //       var result = [group.salesByProduct()[0][14].week, group.salesByProduct()[1][3].week,group.salesByProduct()[2][8].week, group.salesByProduct()[3][7].week];
-      //       assert.deepEqual(result, ["week1","week2","week3","week4"]);
-      // });
+      it('group.salesByProduct : each array should only contain data for one week and they should be in order.', function() {
+            var result = [group.salesByProduct()[0][14].week, group.salesByProduct()[1][3].week,group.salesByProduct()[2][8].week, group.salesByProduct()[3][7].week];
+            assert.deepEqual(result, ["week1","week2","week3","week4"]);
+      });
 
-      // it('group.salesByProduct should...return cumulative revenue, totalcost, and profit for each product for each week.', function() {
-      //       var result = f.filterData(group.salesByProduct()[2],[["product","Milk 1l"]]);
-      //       assert.deepEqual(result, [{week: "week3", category: "Food", product: "Milk 1l", quantity: sale.quantity, unitPrice: sale.unitPrice, revenue: sale.revenue, totalcost: sale.totalcost, profit: sale.profit }]);
-      // });
+      it('group.salesByProduct should...return cumulative revenue, totalcost, and profit for each product for each week.', function() {
+            var result = f.filterData(group.salesByProduct()[2],[["product","Milk 1l"]]);
+            assert.deepEqual(result, [{week: "week3", category: "Food", product: "Milk 1l", quantity: 30, inventory: 10, unitPrice: 10, revenue: 300, totalcost: 227.5, profit: 72.5 }]);
+      });
       //
       // it(' should...', function() {
       //       var result =
