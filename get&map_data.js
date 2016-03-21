@@ -258,5 +258,5 @@ exports.findPurchases = function(item, mappedData) {
 // console.log(result);
 // var purchases = mappedPurchases();
 var result = mappedSales()[2].find(function(i){return i.date === "17-Feb" && i.product === "Bananas - loose";});
-console.log(result);
+// console.log(result);
 // mappedSales();

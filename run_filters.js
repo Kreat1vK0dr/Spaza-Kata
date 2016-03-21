@@ -1,7 +1,8 @@
-var data = require('./group_data');
+var group = require('./group_data');
 var draw = require('./drawTable');
 var f = require('./filter');
 var get = require('./get&map_data');
+var sms = require('./sms_configure');
 var exprt = require('./export');
 var salesFolder = './sales';
 var purchasesFolder = './purchases';
@@ -12,31 +13,23 @@ var productListFolder = "./product-list";
     // console.log(draw.table(draw.dataTable(filter)));
     // console.log(filter);
 
-var extract = f.concat(groupSalesByProduct());
+// FILTER GROUP BY PRODUCT************************************************************************
 
-var find = extract.filter(function(item) {
-  return item.week === 'week4';
-});
-
-var extract = f.concat(groupSalesByProduct());
-// console.log(extract);
-var find = f.filterData(extract, [['week','week4']]);
-// console.log(find);
-var sorted = find.sort(f.sortBy('quantity'));
-// console.log(draw.table(draw.dataTable(sorted)));
-
-var byProduct = f.concat(groupSalesByProduct());
-var filtered = f.filterData(byProduct,[['product','Heart Chocolates'],['week','week2']]);
-var sorted = byProduct.sort(f.sortBy('quantity'));
-// console.log(draw.table(draw.dataTable(byProduct)));
+var byProduct = f.concat(group.salesByProduct());
+var filtered = f.filterData(byProduct,[['week','week2'],['category','Sweets']]);
+// var sorted = byProduct.sort(f.sortBy('quantity'));
+// console.log(draw.table(draw.dataTable(filtered)));
 // console.log(groupSalesByProduct());
 
-
-var byCategory = f.concat(groupSalesByCategory());
+// FILTER GROUP BY CATEGORY************************************************************************
+var byCategory = f.concat(group.salesByCategory());
 var sorted = byCategory.sort(f.sortBy('quantity'));
-var filtered = f.filterData(sorted,[['week','week1']]);
+var filtered = f.filterData(sorted,[['week','week2'],['category','Sweets']]);
 // console.log(draw.table(draw.dataTable(byCategory)));
 // console.log(groupSalesByCategory().length);
 // console.log(draw.table(draw.dataTable(sorted)));
 // console.log(filtered);
 // console.log(draw.table(draw.dataTable(filtered)));
+
+// TEST IMPORTED MODULES************************************************************************
+console.log(sms.content().length);

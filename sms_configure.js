@@ -1,6 +1,6 @@
-var data = require('./group_data');
+var group = require('./group_data');
 
-var smsData = data.whatNelisaWants();
+var smsData = group.whatNelisaWants();
 
 function getWeekData(week) {
   switch(week) {
@@ -15,11 +15,10 @@ function getWeekData(week) {
 
 var content = getWeekData(1);
 
-var sms = content.week.toUpperCase()+'\nMOST==>\nPop-P: '+content['most popular product'].product+'\nProf-P: '+content['most profitable product'].product+'\nPop-C: '+content['most popular category'].category+'\nProf-C: '+content['most profitable category'].category+'\nLEAST==>\nPop-P: '+content['least popular product'].product+'\nProf-P: '+content['least profitable product'].product+'\nPop-C: '+content['least popular category'].category+'\nProf-C: '+content['least profitable category'].category;
+var sms = content.week.toUpperCase()+'\nMOST=>>\nPop-P: '+content['most popular product'].product+'\nProf-P: '+content['most profitable product'].product+'\nPop-C: '+content['most popular category'].category+'\nProf-C: '+content['most profitable category'].category+'\nLEAST=>>\nPop-P: '+content['least popular product'].product+'\nProf-P: '+content['least profitable product'].product+'\nPop-C: '+content['least popular category'].category+'\nProf-C: '+content['least profitable category'].category;
 
-exports.smsText = function(week){
-  var content = getWeekData(week);
-  return content.week.toUpperCase()+'\nMOST==>\nPop-P: '+content['most popular product'].product+'\nProf-P: '+content['most profitable product'].product+'\nPop-C: '+content['most popular category'].category+'\nProf-C: '+content['most profitable category'].category+'\nLEAST==>\nPop-P: '+content['least popular product'].product+'\nProf-P: '+content['least profitable product'].product+'\nPop-C: '+content['least popular category'].category+'\nProf-C: '+content['least profitable category'].category;
-}
+exports.content = function(week){
+  return sms;
+};
 
-console.log(sms);
+// console.log(sms);
