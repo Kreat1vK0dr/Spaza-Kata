@@ -33,7 +33,7 @@ function rawPurchasesDataConverted() {
 
 function mappedPurchases() {
     var purchases = rawPurchasesDataConverted();
-    var obj = {};
+    var obj = new Map();
     return purchases.reduce(function(arr, item){
           if (!obj[item[2]]) {
             obj[item[2]] = true;
@@ -206,6 +206,7 @@ function getCostAndLogSaleAt(date, item, quantity, mappedPurchases) {
                   obj.revenue = typeof c==='object' ? p*c[1] : p*q;
                   obj.totalcost = typeof c==='object' ? c[0] : c;
                   obj.profit = typeof c==='object' ? p*c[1] - c[0] : p*q-c;
+                  obj.profitMargin = Number(((obj.profit/obj.revenue)*100).toFixed(2));
 
                return obj;
            })

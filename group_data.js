@@ -17,7 +17,7 @@ function groupSalesByProduct() {
           allSummary.push(week.reduce(function(weekSum, sale) {
               if (!keeptrack[sale.product]) {
                 keeptrack[sale.product] = 1;
-                weekSum.push({week: sale.week, category: sale.category, product: sale.product, quantity: sale.quantity, inventory: sale.inventory-sale.quantity, unitPrice: sale.unitPrice, revenue: sale.revenue, totalcost: sale.totalcost, profit: sale.profit });
+                weekSum.push({week: sale.week, category: sale.category, product: sale.product, quantity: sale.quantity, inventory: sale.inventory-sale.quantity, unitPrice: sale.unitPrice, revenue: sale.revenue, totalcost: sale.totalcost, profit: sale.profit, profitMargin: sale.profitMargin });
               } else {
                   var product = weekSum.find(function(item) {return item.product === sale.product;});
                   product.quantity += sale.quantity;
@@ -25,6 +25,7 @@ function groupSalesByProduct() {
                   product.revenue += sale.revenue;
                   product.totalcost += sale.totalcost;
                   product.profit += sale.profit;
+                  product.profitMargin = Number(((product.profit/product.revenue)*100).toFixed(2));
 
                   if (typeof product.unitPrice!== 'object' && product.unitPrice!==sale.unitPrice) {
                     product.unitPrice = [product.unitPrice, sale.unitPrice];
@@ -49,7 +50,7 @@ function groupSalesByCategory () {
         allWeekSum.push(week.reduce(function(weekSum, product){
                 if (!keeptrack[product.category]) {
                   keeptrack[product.category] = 1;
-                  weekSum.push({week: product.week, category: product.category, quantity: product.quantity, inventory: product.inventory, unitPrice: product.unitPrice, revenue: product.revenue, totalcost: product.totalcost, profit: product.profit});
+                  weekSum.push({week: product.week, category: product.category, quantity: product.quantity, inventory: product.inventory, unitPrice: product.unitPrice, revenue: product.revenue, totalcost: product.totalcost, profit: product.profit, profitMargin: product.profitMargin });
                 } else {
                   var category = weekSum.find(function(item) {return item.category === product.category;});
                   category.quantity += product.quantity;
@@ -57,6 +58,7 @@ function groupSalesByCategory () {
                   category.revenue += product.revenue;
                   category.totalcost += product.totalcost;
                   category.profit += product.profit;
+                  category.profitMargin = Number(((product.profit/product.revenue)*100).toFixed(2));
 
                   if (typeof category.unitPrice!== 'object' && category.unitPrice!==product.unitPrice) {
                     category.unitPrice = [category.unitPrice, product.unitPrice];
