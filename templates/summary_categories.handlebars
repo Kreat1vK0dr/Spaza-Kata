@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Spaza</title>
+  <title>Spaza - {{title}}</title>
 </head>
 <body>
   <div id="title">
@@ -10,10 +10,10 @@
 </div>
   <table>
     <tr> <th colspan="6"> My First HandleBars Table </th> </tr>
-    <tr> <td>What</td> <td>Product</td> <td>Category</td> <td>Quantity</td> <td>Profit</td> <td>Profit Margin</td> </tr>
+    <tr> <td>Category</td> <td>Quantity Sold</td> <td>Inventory</td> <td>Profit</td> <td>Profit Margin</td> </tr>
       {{#each data}}
         <tr>
-          <td>{{what}}</td> <td>{{product}}</td> <td>{{category}}</td> <td>{{quantity}}</td> <td>{{profit}}</td> <td>{{profitMargin}}</td>
+          <td>{{category}}</td> <td>{{quantity}}</td> <td>{{invetory}}</td> <td>{{profit}}</td> <td>{{profitMargin}}</td>
         </tr>
         {{/each}}
 

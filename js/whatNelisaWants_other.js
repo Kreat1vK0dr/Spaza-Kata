@@ -10,10 +10,10 @@ function returnWhatNelisaWants() {
 
               if (!obj.week) {
                     obj.week = lineitem.week;
-                    obj.data = [{what: 'most popular product',product: lineitem.product, quantity: lineitem.quantity, profit: lineitem.profit, profitMargin: lineitem.profitMargin}];
-                    obj.data.push({what: 'least popular product', product: lineitem.product, quantity: lineitem.quantity, profit: lineitem.profit, profitMargin: lineitem.profitMargin});
-                    obj.data.push({what: 'most profitable product', product: lineitem.product, quantity: lineitem.quantity, profit: lineitem.profit, profitMargin: lineitem.profitMargin});
-                    obj.data.push({what: 'least profitable product', product: lineitem.product, quantity: lineitem.quantity, profit: lineitem.profit, profitMargin: lineitem.profitMargin});
+                    obj.data = [{what: 'most popular product',item: lineitem.product, quantity: lineitem.quantity, inventory: lineitem.inventory, profit: lineitem.profit, profitMargin: lineitem.profitMargin}];
+                    obj.data.push({what: 'least popular product', item: lineitem.product, quantity: lineitem.quantity, inventory: lineitem.inventory, profit: lineitem.profit, profitMargin: lineitem.profitMargin});
+                    obj.data.push({what: 'most profitable product', item: lineitem.product, quantity: lineitem.quantity, inventory: lineitem.inventory, profit: lineitem.profit, profitMargin: lineitem.profitMargin});
+                    obj.data.push({what: 'least profitable product', item: lineitem.product, quantity: lineitem.quantity, inventory: lineitem.inventory, profit: lineitem.profit, profitMargin: lineitem.profitMargin});
                   } else {
                       var mpopP = obj.data.find(function(i) {return i.what === "most popular product";});
                       var lpopP = obj.data.find(function(i) {return i.what === "least popular product";});
@@ -21,27 +21,31 @@ function returnWhatNelisaWants() {
                       var lprofP = obj.data.find(function(i) {return i.what === "least profitable product";});
 
                             if (lineitem.quantity > mpopP.quantity) {
-                      mpopP.product = lineitem.product;
+                      mpopP.item = lineitem.product;
                       mpopP.quantity = lineitem.quantity;
+                      mpopP.inventory = lineitem.inventory;
                       mpopP.profit = lineitem.profit;
                       mpopP.profitMargin = lineitem.profitMargin;
                       }
                       if (lineitem.quantity < lpopP.quantity) {
-                        lpopP.product = lineitem.product;
+                        lpopP.item = lineitem.product;
                         lpopP.quantity = lineitem.quantity;
+                        lpopP.inventory = lineitem.inventory;
                         lpopP.profit = lineitem.profit;
                         lpopP.profitMargin = lineitem.profitMargin;
                       }
                       if (lineitem.profit > mprofP.profit) {
-                        mprofP.product = lineitem.product;
+                        mprofP.item = lineitem.product;
                         mprofP.profit = lineitem.profit;
                         mprofP.quantity = lineitem.quantity;
+                        mprofP.inventory = lineitem.inventory;
                         mprofP.profitMargin = lineitem.profitMargin;
                       }
                       if (lineitem.profit < lprofP.profit) {
-                        lprofP.product = lineitem.product;
+                        lprofP.item = lineitem.product;
                         lprofP.profit = lineitem.profit;
                         lprofP.quantity = lineitem.quantity;
+                        lprofP.inventory = lineitem.inventory;
                         lprofP.profitMargin = lineitem.profitMargin;
                       }
 
@@ -55,10 +59,10 @@ function returnWhatNelisaWants() {
       for (var i = 0; i<dataCat.length;i++) {
         for (var j = 0; j<dataCat[i].length; j++){
             if (j === 0) {
-                  byProduct[i].data.push({what: 'most popular category', category: dataCat[i][j].category, quantity: dataCat[i][j].quantity, profit: dataCat[i][j].profit, profitMargin: dataCat[i][j].profitMargin});
-                  byProduct[i].data.push({what: 'least popular category', category: dataCat[i][j].category, quantity: dataCat[i][j].quantity, profit: dataCat[i][j].profit, profitMargin: dataCat[i][j].profitMargin});
-                  byProduct[i].data.push({what: 'most profitable category', category: dataCat[i][j].category, quantity: dataCat[i][j].quantity, profit: dataCat[i][j].profit, profitMargin: dataCat[i][j].profitMargin});
-                  byProduct[i].data.push({what: 'least profitable category', category: dataCat[i][j].category, quantity: dataCat[i][j].quantity, profit: dataCat[i][j].profit, profitMargin: dataCat[i][j].profitMargin});
+                  byProduct[i].data.push({what: 'most popular category', item: dataCat[i][j].category, quantity: dataCat[i][j].quantity, inventory: dataCat[i][j].inventory, profit: dataCat[i][j].profit, profitMargin: dataCat[i][j].profitMargin});
+                  byProduct[i].data.push({what: 'least popular category', item: dataCat[i][j].category, quantity: dataCat[i][j].quantity, inventory: dataCat[i][j].inventory, profit: dataCat[i][j].profit, profitMargin: dataCat[i][j].profitMargin});
+                  byProduct[i].data.push({what: 'most profitable category', item: dataCat[i][j].category, quantity: dataCat[i][j].quantity, inventory: dataCat[i][j].inventory, profit: dataCat[i][j].profit, profitMargin: dataCat[i][j].profitMargin});
+                  byProduct[i].data.push({what: 'least profitable category', item: dataCat[i][j].category, quantity: dataCat[i][j].quantity, inventory: dataCat[i][j].inventory, profit: dataCat[i][j].profit, profitMargin: dataCat[i][j].profitMargin});
 
                 } else {
                         var mpopC = byProduct[i].data.find(function(i) {return i.what === 'most popular category';});
@@ -67,27 +71,31 @@ function returnWhatNelisaWants() {
                         var lprofC = byProduct[i].data.find(function(i) {return i.what === 'least profitable category';});
 
                         if (dataCat[i][j].quantity > mpopC.quantity) {
-                  mpopC.category = dataCat[i][j].category;
+                  mpopC.item = dataCat[i][j].category;
                   mpopC.quantity = dataCat[i][j].quantity;
+                  mpopC.inventory = dataCat[i][j].inventory;
                   mpopC.profit = dataCat[i][j].profit;
                   mpopC.profitMargin = dataCat[i][j].profitMargin;
                   }
                   if (dataCat[i][j].quantity < lpopC.quantity) {
-                    lpopC.category = dataCat[i][j].category;
+                    lpopC.item = dataCat[i][j].category;
                     lpopC.quantity = dataCat[i][j].quantity;
+                    lpopC.inventory = dataCat[i][j].inventory;
                     lpopC.profit = dataCat[i][j].profit;
                     lpopC.profitMargin = dataCat[i][j].profitMargin;
                   }
                   if (dataCat[i][j].profit > mprofC.profit) {
-                    mprofC.category = dataCat[i][j].category;
+                    mprofC.item = dataCat[i][j].category;
                     mprofC.profit = dataCat[i][j].profit;
                     mprofC.quantity = dataCat[i][j].quantity;
+                    mprofC.inventory = dataCat[i][j].inventory;
                     mprofC.profitMargin = dataCat[i][j].profitMargin;
                   }
                   if (dataCat[i][j].profit < lprofC.profit) {
-                    lprofC.category = dataCat[i][j].category;
+                    lprofC.item = dataCat[i][j].category;
                     lprofC.profit = dataCat[i][j].profit;
                     lprofC.quantity = dataCat[i][j].quantity;
+                    lprofC.inventory = dataCat[i][j].inventory;
                     lprofC.profitMargin = dataCat[i][j].profitMargin;
                   }
                 }
