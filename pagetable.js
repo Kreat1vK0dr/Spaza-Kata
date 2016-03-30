@@ -62,7 +62,7 @@ for (var i = 0; i<groupP.length; i++) {
 
 for (var j = 0; j<filenames.length; j++) {
   var d = filenames[j].replace(".html","").replace("_"," ");
-  links.push({ref: "./data/"+filenames[j], description: d});
+  links.push({ref: html+filenames[j], description: d});
 }
 
 // console.log(links);
