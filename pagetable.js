@@ -11,7 +11,7 @@ var f = require('./js/filter');
 var path = require('./js/filepaths');
 var handlebars = require('handlebars');
 var html = "./html/data/";
-var htmlIndex = "./html/index.html";
+var htmlIndex = "./index.html";
 var js = "./js/";
 // var $ = require('jquery');
 
