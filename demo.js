@@ -49,7 +49,7 @@ var exprt = require('./js/export');
 // console.log(nelisa2.whatSheWants()[0].data);
 
 // CONFIGURE_SMS
-// console.log(sms.content());
+console.log(sms.content());
 
 // FILTER EXAMPLE
 //Filter mappedSales

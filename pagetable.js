@@ -71,6 +71,10 @@ var source = fs.readFileSync('./templates/index.handlebars', 'utf8');//read spaz
 var template = handlebars.compile(source);
 fs.writeFileSync(htmlIndex, template(links));
 
+var variable = function() {
+  var other = variable.
+}
+
 
 
 // console.log(ML);

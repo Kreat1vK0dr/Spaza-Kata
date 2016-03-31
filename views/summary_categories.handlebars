@@ -8,14 +8,16 @@
   <div id="title">
       <h1>{{title}}</h1>
 </div>
-  <table>
-    <tr> <th colspan="6"> My First HandleBars Table </th> </tr>
+  <table class="table table-striped">
+    <tbody>
+    <!-- <tr> <th colspan="6"> My First HandleBars Table </th> </tr> -->
     <tr> <td>Category</td> <td>Quantity Sold</td> <td>Inventory</td> <td>Profit</td> <td>Profit Margin</td> </tr>
       {{#each data}}
         <tr>
           <td>{{category}}</td> <td>{{quantity}}</td> <td>{{inventory}}</td> <td>{{profit}}</td> <td>{{profitMargin}}</td>
         </tr>
         {{/each}}
+      </tbody>
 
   </table>
 </body>
